@@ -1,90 +1,48 @@
-import React, { useState } from 'react';
-import LandingPage from './components/LandingPage';
-import SignUpPage from './components/SignUpPage';
-import OnboardingFlow from './components/OnboardingFlow';
-import Navigation from './components/Navigation';
-import Dashboard from './components/Dashboard';
-import Journal from './components/Journal';
-import WellnessTracker from './components/WellnessTracker';
-import Community from './components/Community';
-import CareConnect from './components/CareConnect';
-import Settings from './components/Settings';
+import { useState } from 'react';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { LandingPage } from './pages/LandingPage';
+import { SignIn } from './pages/SignIn';
+import { SignUp } from './pages/SignUp';
+import { Dashboard } from './pages/Dashboard';
 
-type AppState = 'landing' | 'signup' | 'signin' | 'onboarding' | 'app';
+type AppView = 'landing' | 'signin' | 'signup';
 
-export default function App() {
-  const [appState, setAppState] = useState<AppState>('landing');
-  const [activeTab, setActiveTab] = useState('home');
+function AppContent() {
+  const { user, loading } = useAuth();
+  const [view, setView] = useState<AppView>('landing');
 
-  const renderActiveComponent = () => {
-    switch (activeTab) {
-      case 'home':
-        return <Dashboard />;
-      case 'journal':
-        return <Journal />;
-      case 'wellness':
-        return <WellnessTracker />;
-      case 'community':
-        return <Community />;
-      case 'care':
-        return <CareConnect />;
-      case 'settings':
-        return <Settings />;
-      default:
-        return <Dashboard />;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-soft-gray via-warm-cream to-soft-mint flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-muted-lavender border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600">Loading your wellness journey...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    if (view === 'landing') {
+      return <LandingPage onGetStarted={() => setView('signup')} />;
     }
-  };
 
-  const renderCurrentView = () => {
-    switch (appState) {
-      case 'landing':
-        return (
-          <LandingPage
-            onGetStarted={() => setAppState('signup')}
-            onSignIn={() => setAppState('signin')}
-          />
-        );
-      case 'signup':
-        return (
-          <SignUpPage
-            onBack={() => setAppState('landing')}
-            onSignUp={() => setAppState('onboarding')}
-            onSignIn={() => setAppState('signin')}
-          />
-        );
-      case 'signin':
-        return (
-          <SignUpPage
-            onBack={() => setAppState('landing')}
-            onSignUp={() => setAppState('app')}
-            onSignIn={() => setAppState('app')}
-          />
-        );
-      case 'onboarding':
-        return (
-          <OnboardingFlow
-            onComplete={() => setAppState('app')}
-            onBack={() => setAppState('signup')}
-          />
-        );
-      case 'app':
-        return (
-          <div className="min-h-screen flex flex-col bg-white">
-            {/* Main Content */}
-            <main className="flex-1 overflow-y-auto pb-20">
-              {renderActiveComponent()}
-            </main>
+    return view === 'signin' ? (
+      <SignIn onToggleMode={() => setView('signup')} />
+    ) : (
+      <SignUp onToggleMode={() => setView('signin')} />
+    );
+  }
 
-            {/* Bottom Navigation */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg" style={{ borderColor: 'var(--light-gray)' }}>
-              <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
-            </div>
-          </div>
-        );
-      default:
-        return null;
-    }
-  };
-
-  return renderCurrentView();
+  return <Dashboard />;
 }
+
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+export default App;
