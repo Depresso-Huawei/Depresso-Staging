@@ -4,19 +4,136 @@
 
 @layer base {
   * {
-    @apply border-slate-200;
+    @apply focus:outline-none;
   }
 
   body {
     @apply antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    @apply appearance-none w-6 h-6 bg-white border-2 border-coral rounded-full cursor-pointer shadow-lg;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    @apply w-6 h-6 bg-white border-2 border-coral rounded-full cursor-pointer shadow-lg;
+  }
+
+  input[type="range"]:focus::-webkit-slider-thumb {
+    @apply ring-4 ring-coral ring-opacity-30;
+  }
+
+  input[type="range"]:focus::-moz-range-thumb {
+    @apply ring-4 ring-coral ring-opacity-30;
   }
 }
 
 @layer utilities {
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  .animate-in {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .text-coral {
+    color: #FF6B6B;
+  }
+
+  .text-coral-dark {
+    color: #E85555;
+  }
+
+  .text-soft-blue {
+    color: #4A90E2;
+  }
+
+  .text-soft-blue-dark {
+    color: #3A7BC8;
+  }
+
+  .bg-coral {
+    background-color: #FF6B6B;
+  }
+
+  .bg-coral-dark {
+    background-color: #E85555;
+  }
+
+  .bg-soft-blue {
+    background-color: #4A90E2;
+  }
+
+  .bg-soft-blue-dark {
+    background-color: #3A7BC8;
+  }
+
+  .border-coral {
+    border-color: #FF6B6B;
+  }
+
+  .border-soft-blue {
+    border-color: #4A90E2;
+  }
+
+  .ring-coral {
+    --tw-ring-color: #FF6B6B;
+  }
+
+  .ring-soft-blue {
+    --tw-ring-color: #4A90E2;
+  }
+
+  .from-coral\/10 {
+    --tw-gradient-from: rgba(255, 107, 107, 0.1);
+  }
+
+  .from-coral\/5 {
+    --tw-gradient-from: rgba(255, 107, 107, 0.05);
+  }
+
+  .to-coral\/5 {
+    --tw-gradient-to: rgba(255, 107, 107, 0.05);
+  }
+
+  .from-soft-blue\/10 {
+    --tw-gradient-from: rgba(74, 144, 226, 0.1);
+  }
+
+  .from-soft-blue\/5 {
+    --tw-gradient-from: rgba(74, 144, 226, 0.05);
+  }
+
+  .to-soft-blue\/5 {
+    --tw-gradient-to: rgba(74, 144, 226, 0.05);
+  }
+
+  .from-soft-blue\/20 {
+    --tw-gradient-from: rgba(74, 144, 226, 0.2);
+  }
+
+  .to-soft-blue\/10 {
+    --tw-gradient-to: rgba(74, 144, 226, 0.1);
+  }
+
+  .hover\:bg-coral\/10:hover {
+    background-color: rgba(255, 107, 107, 0.1);
+  }
+
+  .hover\:bg-soft-blue\/10:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+  }
+
+  .ring-coral\/20 {
+    --tw-ring-color: rgba(255, 107, 107, 0.2);
   }
 }
